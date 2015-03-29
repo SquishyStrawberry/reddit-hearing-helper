@@ -2,6 +2,8 @@
 import praw
 import re
 import string
+import json
+
 # If we're in the directory of the file, I can just get config_handler.
 try:
 	import config_handler
@@ -15,8 +17,11 @@ class LoudBot(object):
 	def __init__(self, user, passw, user_agent):
 		self.reddit = praw.Reddit(user_agent)
 		self.reddit.login(user, passw)
-		self.visited = set()
-	
+		self.visited = config_handler.from_config(config_handler.VISITED_NAME)
+		if not self.visited:
+			self.visited = []
+		self.visited = set(self.visited)
+
 	def run(self):
 		for comm in praw.helpers.comment_stream(self.reddit, "all", 200, verbosity=0):
 			if comm.id in self.visited:
@@ -27,9 +32,13 @@ class LoudBot(object):
 				# I'll edit this later, when praw introduces a .parent_comment :/
 				parent = self.get_parent(self.reddit, comm)
 				parent_text = parent.body
-				reply = "**".join(("", parent_text.upper(), ""))
+				reply = "**{}**".format(parent_text.upper())
 				comm.reply(reply)
 				self.visited.add(comm.id)
+
+	def save_visited(self):
+		with open(config_hanler.VISITED_NAME, "w") as visit:
+			visit.write(json.dumps(list(self.visited)))
 
 	# Helper Functions.
 
@@ -41,5 +50,3 @@ class LoudBot(object):
 	@staticmethod
 	def get_parent(red, comment):
 		return red.get_info(thing_id=comment.parent_id)
-	
-		
