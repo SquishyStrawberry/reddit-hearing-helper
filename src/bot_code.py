@@ -3,7 +3,7 @@ import praw
 import re
 import string
 import config_handler
-matcher = re.compile(config_handler.from_config(config_handler.CONFIG_NAME, "regex"))
+matcher = re.compile(config_handler.from_config(config_handler.CONFIG_NAME, "regex") or "wh?at")
 
 
 class LoudBot(object):
