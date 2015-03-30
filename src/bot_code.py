@@ -57,7 +57,7 @@ class LoudBot(object):
 					reply.append("**{}**".format(i))
 				reply = "\n  ".join(reply)
 				comm.reply(reply)
-				self.visited.add(comm.id)
+			self.visited.add(comm.id)
 
 	def save_visited(self):
 		"""
