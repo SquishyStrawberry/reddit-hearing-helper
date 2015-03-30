@@ -85,7 +85,8 @@ class LoudBot(object):
 			print("Checking messages...")
 		for i in self.reddit.get_unread():
 			# No verbose flag for this one, since without printing this would be useless.
-			print("Got a message!")
+			itype = "comment" if isinstance(i, praw.objects.Comment) else "message"
+			print("Got a {}!".format(itype))
 			do_open = input("Do you want to read it?\n> ").lower().strip()
 			if do_open.startswith("y"):
 				print(i.body)
