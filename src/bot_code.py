@@ -15,7 +15,7 @@ matcher = re.compile(regex or "^wh?at$")
 
 
 class LoudBot(object):
-	def __init__(self, user, passw, user_agent, verbose=True):
+	def __init__(self, user, passw, user_agent, save_all=False, verbose=True):
 		"""
 		Initializes the LoudBot class
 		Arguments:
@@ -33,6 +33,7 @@ class LoudBot(object):
 		# I don't use the logging module because I don't like how it works
 		# when you use requests.
 		self.verbose = verbose
+		self.save_all = save_all
 
 	def run(self):
 		"""
@@ -43,6 +44,7 @@ class LoudBot(object):
 			print("Starting bot.")
 		subreddit = config_handler.from_config(config_handler.CONFIG_NAME, "subreddit")
 		for comm in praw.helpers.comment_stream(self.reddit, subreddit or "all", 200, verbosity=0):
+			successful = False
 			if comm.id in self.visited:
 				continue
 			text = self.normalize_body(comm)
@@ -57,7 +59,9 @@ class LoudBot(object):
 					reply.append("**{}**".format(i))
 				reply = "\n  ".join(reply)
 				comm.reply(reply)
-			self.visited.add(comm.id)
+				successful = True
+			if successful or self.save_all:
+				self.visited.add(comm.id)
 
 	def save_visited(self):
 		"""
@@ -121,4 +125,4 @@ class LoudBot(object):
 		"""
 		jl = json.dumps(l, sort_keys = True)
 		jl = jl.split(",")
-		return ",\n".join(jl)
+		return ",\n ".join(jl)

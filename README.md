@@ -13,5 +13,6 @@ Whenever somebody asks "what?" or "wat?" in a reddit comment this handy bot...
 	"subreddit": "What subreddit to parse through, default is 'all', str",  
 	"userAgent": "What user agent to use, str",
 	"checkMessages": "If to check messages at startup, bool",  
-	"verbose": "If to be verbose, bool"  
+	"verbose": "If to be verbose, bool",  
+	"saveAll": "If to save ALL the ids or just successfull ones, bool"  
 }
