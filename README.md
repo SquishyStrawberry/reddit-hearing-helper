@@ -8,7 +8,8 @@ Whenever somebody asks "what?" or "wat?" in a reddit comment this handy bot...
 # Future Features
 1. Error-based waiting, not just random waiting.
 2. Bug Fixing
-3. And much more!
+3. Complete italics support.
+4. And much more!
 
 # config.json Explanation
 {  
