@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 import src
-#import warnings
-#import atexit
-#atexit.register(lambda: warnings.resetwarnings())
-#warnings.simplefilter("ignore")
+
 
 check_msg = src.from_config(src.CONFIG_NAME, "checkMessages")
 verbose = src.from_config(src.CONFIG_NAME, "verbose")
