@@ -10,7 +10,8 @@ try:
 # Else, I need to get it from src.
 except ImportError:
 	from src import config_handler
-matcher = re.compile(config_handler.from_config(config_handler.CONFIG_NAME, "regex") or "^wh?at$")
+regex = config_handler.from_config(config_handler.CONFIG_NAME, "regex")
+matcher = re.compile(regex or "^wh?at$")
 
 
 class LoudBot(object):
@@ -23,13 +24,14 @@ class LoudBot(object):
 		self.visited = set(self.visited)
 
 	def run(self):
-		for comm in praw.helpers.comment_stream(self.reddit, "all", 200, verbosity=0):
+		subreddit = config_handler.from_config(config_handler.CONFIG_NAME, "subreddit")
+		for comm in praw.helpers.comment_stream(self.reddit, subreddit or "all", 200, verbosity=0):
 			if comm.id in self.visited:
 				continue
 			text = self.normalize_body(comm)
 			if matcher.match(text) and not comm.is_root:
 				print("Got one! {}".format(comm.id))
-				# I'll edit this later, when praw introduces a .parent_comment :/
+				# I'll edit this later, when praw introduces a .parent_comment.
 				parent = self.get_parent(self.reddit, comm)
 				parent_text = parent.body
 				reply = "**{}**".format(parent_text.upper())
