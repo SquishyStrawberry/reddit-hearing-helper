@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
 import src
 
-bot = src.LoudBot(src.from_config(src.CONFIG_NAME, "user"), src.from_config(src.CONFIG_NAME, "pass"), "Py3 LoudBot")
-bot.check_messages()
+check_msg = src.from_config(src.CONFIG_NAME, "checkMessages")
+verbose = src.from_config(src.CONFIG_NAME, "verbose")
+user = src.from_config(src.CONFIG_NAME, "user")
+passw = src.from_config(src.CONFIG_NAME, "pass")
+agent = src.from_config(src.CONFIG_NAME, "userAgent")
+bot = src.LoudBot(user, passw, agent, verbose)
+if check_msg:
+    bot.check_messages()
 try:
     bot.run()
 except KeyboardInterrupt:

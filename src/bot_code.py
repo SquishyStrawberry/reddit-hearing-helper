@@ -15,22 +15,28 @@ matcher = re.compile(regex or "^wh?at$")
 
 
 class LoudBot(object):
-	def __init__(self, user, passw, user_agent):
+	def __init__(self, user, passw, user_agent, verbose=True):
 		self.reddit = praw.Reddit(user_agent)
 		self.reddit.login(user, passw)
 		self.visited = config_handler.from_config(config_handler.VISITED_NAME)
 		if not self.visited:
 			self.visited = []
 		self.visited = set(self.visited)
+		# I don't use the logging module because I don't like how it works
+		# when you use requests.
+		self.verbose = verbose
 
 	def run(self):
+		if self.verbose:
+			print("Starting bot.")
 		subreddit = config_handler.from_config(config_handler.CONFIG_NAME, "subreddit")
 		for comm in praw.helpers.comment_stream(self.reddit, subreddit or "all", 200, verbosity=0):
 			if comm.id in self.visited:
 				continue
 			text = self.normalize_body(comm)
 			if matcher.match(text) and not comm.is_root:
-				print("Got one! {}".format(comm.id))
+				if self.verbose:
+					print("Got one! {}".format(comm.id))
 				# I'll edit this later, when praw introduces a .parent_comment.
 				parent = self.get_parent(self.reddit, comm)
 				parent_text = parent.body
@@ -47,6 +53,7 @@ class LoudBot(object):
 
 	def check_messages(self):
 		for i in self.reddit.get_unread():
+			# No verbose flag for this one, since without printing this would be useless.
 			print("Got a message!")
 			do_open = input("Do you want to read it?\n> ").lower().strip()
 			if do_open.startswith("y"):
