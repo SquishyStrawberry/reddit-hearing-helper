@@ -37,7 +37,7 @@ class LoudBot(object):
 				reply = []
 				for i in parent_text.upper().splitlines():
 					reply.append("**{}**".format(i))
-				reply = "\n".join(reply)
+				reply = "\n  ".join(reply)
 				comm.reply(reply)
 				self.visited.add(comm.id)
 
