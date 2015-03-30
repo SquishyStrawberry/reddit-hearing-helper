@@ -42,7 +42,7 @@ class LoudBot(object):
 		Runs indefinitely, or at least until an error.
 		"""
 		if self.verbose:
-			print("Starting bot.")
+			print("Starting bot...")
 		subreddit = config_handler.from_config(config_handler.CONFIG_NAME, "subreddit")
 		for comm in praw.helpers.comment_stream(self.reddit, subreddit or "all", 200, verbosity=0):
 			try:
@@ -96,9 +96,6 @@ class LoudBot(object):
 					if reply_with:
 						i.reply(reply_with)
 			i.mark_as_read()
-
-
-	# Helper Functions.
 
 	@staticmethod
 	def normalize_body(comment):
