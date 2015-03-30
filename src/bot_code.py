@@ -57,11 +57,7 @@ class LoudBot(object):
 			print("Got a message!")
 			do_open = input("Do you want to read it?\n> ").lower().strip()
 			if do_open.startswith("y"):
-				try:
-					print(i.body)
-				except:
-					print("It's text.")
-					print(i.text)
+				print(i.body)
 				do_reply = input("Do you want to reply?\n> ").lower().strip()
 				if do_reply.startswith("y"):
 					reply_with = input("With what?\n> ")
