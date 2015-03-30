@@ -3,6 +3,7 @@ import praw
 import re
 import string
 import json
+import time
 
 # If we're in the directory of the file, I can just get config_handler.
 try:
@@ -44,24 +45,28 @@ class LoudBot(object):
 			print("Starting bot.")
 		subreddit = config_handler.from_config(config_handler.CONFIG_NAME, "subreddit")
 		for comm in praw.helpers.comment_stream(self.reddit, subreddit or "all", 200, verbosity=0):
-			successful = False
-			if comm.id in self.visited:
-				continue
-			text = self.normalize_body(comm)
-			if matcher.match(text) and not comm.is_root:
-				if self.verbose:
-					print("Got one! {}".format(comm.id))
-				# I'll edit this later, when praw introduces a .parent_comment.
-				parent = self.get_parent(self.reddit, comm)
-				parent_text = parent.body
-				reply = []
-				for i in parent_text.upper().splitlines():
-					reply.append("**{}**".format(i))
-				reply = "\n  ".join(reply)
-				comm.reply(reply)
-				successful = True
-			if successful or self.save_all:
-				self.visited.add(comm.id)
+			try:
+				successful = False
+				if comm.id in self.visited:
+					continue
+				text = self.normalize_body(comm)
+				if matcher.match(text) and not comm.is_root:
+					if self.verbose:
+						print("Got one! {}".format(comm.id))
+					# I'll edit this later, when praw introduces a .parent_comment.
+					parent = self.get_parent(self.reddit, comm)
+					parent_text = parent.body
+					reply = []
+					for i in parent_text.upper().splitlines():
+						reply.append("**{}**".format(i))
+					reply = "\n  ".join(reply)
+					comm.reply(reply)
+					successful = True
+				if successful or self.save_all:
+					self.visited.add(comm.id)
+			except praw.errors.APIException:
+				# Let's just save face and wait a while.
+				time.sleep(60)
 
 	def save_visited(self):
 		"""
