@@ -16,6 +16,14 @@ matcher = re.compile(regex or "^wh?at$")
 
 class LoudBot(object):
 	def __init__(self, user, passw, user_agent, verbose=True):
+		"""
+		Initializes the LoudBot class
+		Arguments:
+			user[str]: The username of whatever user the bot will use.
+			passw[str]: The password of said user.
+			user_agent[str]: What user agent to use for the reddit instance
+			verbose[bool]: Sets whether or not to print anything at all.
+		"""
 		self.reddit = praw.Reddit(user_agent)
 		self.reddit.login(user, passw)
 		self.visited = config_handler.from_config(config_handler.VISITED_NAME)
@@ -27,6 +35,10 @@ class LoudBot(object):
 		self.verbose = verbose
 
 	def run(self):
+		"""
+		Main code for the bot.
+		Runs indefinitely, or at least until an error.
+		"""
 		if self.verbose:
 			print("Starting bot.")
 		subreddit = config_handler.from_config(config_handler.CONFIG_NAME, "subreddit")
@@ -48,10 +60,16 @@ class LoudBot(object):
 				self.visited.add(comm.id)
 
 	def save_visited(self):
+		"""
+		Saves whatever's in self.visited
+		"""
 		with open(config_handler.VISITED_NAME, "w") as visit:
 			visit.write(json.dumps(list(self.visited)))
 
 	def check_messages(self):
+		"""
+		Checks through the messages, and can reply/read them.
+		"""
 		for i in self.reddit.get_unread():
 			# No verbose flag for this one, since without printing this would be useless.
 			print("Got a message!")
@@ -70,9 +88,20 @@ class LoudBot(object):
 
 	@staticmethod
 	def normalize_body(comment):
+		"""
+		Normalizes the body of a comment
+		Arguments:
+			comment: a praw.objects.Comment instance.
+		"""
 		body = comment.body.lower().strip()
 		return "".join(i for i in body if i in string.ascii_letters)
 
 	@staticmethod
 	def get_parent(red, comment):
+		"""
+		Gets the parent of a comment
+		arguments:
+			red: a praw.Reddit instance
+			comment: a praw.objects.Comment instance
+		"""
 		return red.get_info(thing_id=comment.parent_id)
