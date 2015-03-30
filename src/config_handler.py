@@ -14,7 +14,6 @@ class ConfigHandler(object):
 		Loads a config with the given name.
 		Caches the configs on load, and just returns the cached version then.
 		Arguments:
-			self: The Class, duh.
 			name: The name of the config
 			value: What value to retrieve
 		Return:
