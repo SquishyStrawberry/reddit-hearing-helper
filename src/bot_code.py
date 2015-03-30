@@ -14,6 +14,7 @@ except ImportError:
 	from src import config_handler
 regex = config_handler.from_config(config_handler.CONFIG_NAME, "regex")
 matcher = re.compile(regex or "^wh?at$")
+italics = re.compile("^\*[^\*]+\*$")
 
 
 class LoudBot(object):
@@ -56,10 +57,11 @@ class LoudBot(object):
 						print("Got one! {}".format(comm.id))
 					# I'll edit this later, when praw introduces a .parent_comment.
 					parent = self.get_parent(self.reddit, comm)
-					parent_text = parent.body
+					parent_text = parent.body.upper().strip()
+					asterisks = 2 + (1 if italics.find_all(parent_text) else 0)
 					reply = []
-					for i in parent_text.upper().strip().splitlines():
-						reply.append("**{}**".format(i))
+					for i in parent_text.splitlines():
+						reply.append("{0}{1}{0}".format("*"+asterisks, i))
 					reply = "\n  ".join(reply)
 					comm.reply(reply)
 					successful = True

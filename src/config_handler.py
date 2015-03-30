@@ -33,7 +33,6 @@ class ConfigHandler(object):
 				return conf
 			else:
 				return conf[value]
-				
 
 
 
