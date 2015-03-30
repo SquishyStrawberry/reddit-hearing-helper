@@ -57,7 +57,7 @@ class LoudBot(object):
 					parent = self.get_parent(self.reddit, comm)
 					parent_text = parent.body
 					reply = []
-					for i in parent_text.upper().splitlines():
+					for i in parent_text.upper().strip().splitlines():
 						reply.append("**{}**".format(i))
 					reply = "\n  ".join(reply)
 					comm.reply(reply)
