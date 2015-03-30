@@ -4,6 +4,7 @@ import re
 import string
 import json
 import time
+import random
 
 # If we're in the directory of the file, I can just get config_handler.
 try:
@@ -66,7 +67,10 @@ class LoudBot(object):
 					self.visited.add(comm.id)
 			except praw.errors.APIException:
 				# Let's just save face and wait a while.
-				time.sleep(60)
+				minutes = random.randint(1, 5)
+				if self.verbose:
+					print("Oops! Sleeping for {} minutes".format(minutes))
+				time.sleep(60*minutes)
 
 	def save_visited(self):
 		"""

@@ -7,7 +7,7 @@ user = src.from_config(src.CONFIG_NAME, "user")
 passw = src.from_config(src.CONFIG_NAME, "pass")
 agent = src.from_config(src.CONFIG_NAME, "userAgent")
 save_all = src.from_config(src.CONFIG_NAME, "saveAll")
-bot = src.LoudBot(user=user, passw=passw, user_agent=agent, verbose=verbose, save_all=save_all)
+bot = src.LoudBot(user=user, passw=passw, user_agent=agent, save_all=save_all, verbose=verbose)
 if check_msg:
     bot.check_messages()
 try:
