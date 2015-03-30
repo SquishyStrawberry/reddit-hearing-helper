@@ -2,7 +2,7 @@
 A simple Reddit bot that solves the problem nobody ever had.
 
 # What does it do?
-Whenever somebody asks "what?" or "wat?" in a reddit comment this handy bot...
+Whenever somebody asks "what?" or "wat?" in a reddit comment this handy bot...  
 ...Well, it replies to them by SCREAMING their parent comment.
 
 # config.json Explanation
