@@ -39,7 +39,7 @@ class LoudBot(object):
 				self.visited.add(comm.id)
 
 	def save_visited(self):
-		with open(config_hanler.VISITED_NAME, "w") as visit:
+		with open(config_handler.VISITED_NAME, "w") as visit:
 			visit.write(json.dumps(list(self.visited)))
 
 	# Helper Functions.
