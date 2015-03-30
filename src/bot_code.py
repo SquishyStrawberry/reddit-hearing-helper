@@ -58,7 +58,7 @@ class LoudBot(object):
 					# I'll edit this later, when praw introduces a .parent_comment.
 					parent = self.get_parent(self.reddit, comm)
 					parent_text = parent.body.upper().strip()
-					asterisks = 2 + (1 if italics.find_all(parent_text) else 0)
+					asterisks = 2 + (1 if italics.findall(parent_text) else 0)
 					reply = []
 					for i in parent_text.splitlines():
 						reply.append("{0}{1}{0}".format("*"+asterisks, i))
@@ -67,6 +67,7 @@ class LoudBot(object):
 					successful = True
 				if successful or self.save_all:
 					self.visited.add(comm.id)
+
 			except praw.errors.APIException:
 				# Let's just save face and wait a while.
 				minutes = random.randint(1, 5)
