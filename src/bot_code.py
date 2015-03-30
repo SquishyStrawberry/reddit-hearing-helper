@@ -47,10 +47,10 @@ class LoudBot(object):
 		for comm in praw.helpers.comment_stream(self.reddit, subreddit or "all", 200, verbosity=0):
 			try:
 				successful = False
-				if comm.id in self.visited:
+				if comm.id in self.visited or comm.is_root or comm.author == self.reddit.user:
 					continue
 				text = self.normalize_body(comm)
-				if matcher.match(text) and not comm.is_root:
+				if matcher.match(text):
 					if self.verbose:
 						print("Got one! {}".format(comm.id))
 					# I'll edit this later, when praw introduces a .parent_comment.
