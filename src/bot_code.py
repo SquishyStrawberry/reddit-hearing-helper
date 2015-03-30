@@ -63,8 +63,10 @@ class LoudBot(object):
 		"""
 		Saves whatever's in self.visited
 		"""
-		with open(config_handler.VISITED_NAME, "w") as visit:
-			visit.write(json.dumps(list(self.visited)))
+		lvisited = list(self.visited)
+		lvisited = self.pretty_json(lvisited)
+		with open(config_handler.VISITED_NAME, "w") as config_file:
+			config_file.write(lvisited)
 
 	def check_messages(self):
 		"""
@@ -100,8 +102,23 @@ class LoudBot(object):
 	def get_parent(red, comment):
 		"""
 		Gets the parent of a comment
-		arguments:
+		Arguments:
 			red: a praw.Reddit instance
 			comment: a praw.objects.Comment instance
+		Return:
+			The parent comment of arg comment.
 		"""
 		return red.get_info(thing_id=comment.parent_id)
+
+	@staticmethod
+	def pretty_json(l):
+		"""
+		Prettifies JSON
+		Arguments:
+			l: A list, or other iterable supported in JSON
+		Return:
+			The Pretty JSON version of l
+		"""
+		jl = json.dumps(l, sort_keys = True)
+		jl = jl.split(",")
+		return ",\n".join(jl)
