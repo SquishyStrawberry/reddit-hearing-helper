@@ -76,6 +76,8 @@ class LoudBot(object):
 		"""
 		Checks through the messages, and can reply/read them.
 		"""
+		if self.verbose:
+			print("Checking messages...")
 		for i in self.reddit.get_unread():
 			# No verbose flag for this one, since without printing this would be useless.
 			print("Got a message!")
