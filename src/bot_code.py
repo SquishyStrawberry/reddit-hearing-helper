@@ -45,6 +45,24 @@ class LoudBot(object):
 		with open(config_handler.VISITED_NAME, "w") as visit:
 			visit.write(json.dumps(list(self.visited)))
 
+	def check_messages(self):
+		for i in self.reddit.get_unread():
+			print("Got a message!")
+			do_open = input("Do you want to read it?\n> ").lower().strip()
+			if do_open.startswith("y"):
+				try:
+					print(i.body)
+				except:
+					print("It's text.")
+					print(i.text)
+				do_reply = input("Do you want to reply?\n> ").lower().strip()
+				if do_reply.startswith("y"):
+					reply_with = input("With what?\n> ")
+					if reply_with:
+						i.reply(reply_with)
+			i.mark_as_read()
+
+
 	# Helper Functions.
 
 	@staticmethod
