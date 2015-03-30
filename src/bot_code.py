@@ -58,10 +58,10 @@ class LoudBot(object):
 					# I'll edit this later, when praw introduces a .parent_comment.
 					parent = self.get_parent(self.reddit, comm)
 					parent_text = parent.body.upper().strip()
-					asterisks = 2 + (1 if italics.findall(parent_text) else 0)
 					reply = []
 					for i in parent_text.splitlines():
-						reply.append("{0}{1}{0}".format("*"+asterisks, i))
+						asterisks = 2 + (1 if italics.findall(i) else 0)
+						reply.append("{0}{1}{0}".format("*"*asterisks, i))
 					reply = "\n  ".join(reply)
 					comm.reply(reply)
 					successful = True
