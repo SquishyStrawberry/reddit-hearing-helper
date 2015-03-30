@@ -5,6 +5,11 @@ A simple Reddit bot that solves the problem nobody ever had.
 Whenever somebody asks "what?" or "wat?" in a reddit comment this handy bot...  
 ...Well, it replies to them by SCREAMING their parent comment.
 
+# Future Features
+1. Error-based waiting, not just random waiting.
+2. Bug Fixing
+3. And much more!
+
 # config.json Explanation
 {  
 	"user": "Your Reddit Username, or rather the bot's, str",  
