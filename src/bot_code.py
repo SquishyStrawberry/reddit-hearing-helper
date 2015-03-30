@@ -70,13 +70,12 @@ class LoudBot(object):
 
 			except praw.errors.APIException as e:
 				# Let's just save face and wait a while.
-				if e.__class__ != praw.errors.RateLimitExceeded:
-					minutes = random.randint(1, 5)
-					if self.verbose:
-						print("Oops! Sleeping for {} minutes".format(minutes))
-					time.sleep(60*minutes)
-				else:
+				print("Oops! Got an error '{}'!".format(e))
+				if e.__class__ == praw.errors.RateLimitExceeded:
 					time.sleep(e.sleep_time)
+				else:
+					minutes = random.randint(1, 5)
+					time.sleep(60*minutes)
 
 	def save_visited(self):
 		"""
