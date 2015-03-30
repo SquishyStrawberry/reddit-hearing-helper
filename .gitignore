@@ -1,8 +1,8 @@
 
 config.json
 
-__pycache__
-
 visited.json
+
+__pycache__
 
 *.pyc
