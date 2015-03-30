@@ -34,7 +34,10 @@ class LoudBot(object):
 				# I'll edit this later, when praw introduces a .parent_comment.
 				parent = self.get_parent(self.reddit, comm)
 				parent_text = parent.body
-				reply = "**{}**".format(parent_text.upper())
+				reply = []
+				for i in parent_text.upper().splitlines():
+					reply.append("**{}**".format(i))
+				reply = "\n".join(reply)
 				comm.reply(reply)
 				self.visited.add(comm.id)
 
