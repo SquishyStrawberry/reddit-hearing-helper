@@ -60,7 +60,7 @@ class LoudBot(object):
 					parent_text = parent.body.upper().strip()
 					reply = []
 					for i in parent_text.splitlines():
-						asterisks = 2 + (1 if italics.findall(i) else 0)
+						asterisks = 2 + (1 if italics.search(i) else 0)
 						reply.append("{0}{1}{0}".format("*"*asterisks, i))
 					reply = "\n  ".join(reply)
 					comm.reply(reply)
@@ -71,7 +71,7 @@ class LoudBot(object):
 			except praw.errors.APIException as e:
 				# Let's just save face and wait a while.
 				print("Oops! Got an error '{}'!".format(e))
-				if e.__class__ == praw.errors.RateLimitExceeded:
+				if isinstance(e, praw.errors.RateLimitExceeded):
 					time.sleep(e.sleep_time)
 				else:
 					minutes = random.randint(1, 5)
@@ -92,7 +92,9 @@ class LoudBot(object):
 		"""
 		if self.verbose:
 			print("Checking messages...")
-		for i in self.reddit.get_unread():
+		messages = self.reddit.get_unread()
+		empty = len(messages) < 1
+		for i in messages:
 			# No verbose flag for this one, since without printing this would be useless.
 			itype = "comment" if isinstance(i, praw.objects.Comment) else "message"
 			print("Got a {}!".format(itype))
@@ -105,6 +107,8 @@ class LoudBot(object):
 					if reply_with:
 						i.reply(reply_with)
 			i.mark_as_read()
+		if empty:
+			print("No messages found.")
 
 	@staticmethod
 	def normalize_body(comment):
@@ -139,4 +143,4 @@ class LoudBot(object):
 		"""
 		jl = json.dumps(l, sort_keys = True)
 		jl = jl.split(",")
-		return ",\n ".join(jl)
+		return ",\n".join(map(lambda x: x.strip(), jl))
