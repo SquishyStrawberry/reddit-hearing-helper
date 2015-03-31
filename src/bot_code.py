@@ -92,7 +92,7 @@ class LoudBot(object):
 		"""
 		if self.verbose:
 			print("Checking messages...")
-		messages = self.reddit.get_unread()
+		messages = tuple(self.reddit.get_unread())
 		empty = len(messages) < 1
 		for i in messages:
 			# No verbose flag for this one, since without printing this would be useless.
