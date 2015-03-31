@@ -60,10 +60,18 @@ class LoudBot(object):
 					parent_text = parent.body.upper().strip()
 					reply = []
 					for i in parent_text.splitlines():
-						asterisks = 2 + (1 if italics.search(i) else 0)
-						reply.append("{0}{1}{0}".format("*"*asterisks, i))
-					reply = "\n  ".join(reply)
-					comm.reply(reply)
+						if i:
+							asterisks = 2 + (1 if italics.search(i) else 0)
+							reply.append("{0}{1}{0}".format("*"*asterisks, i))
+						else:
+							reply.append("")
+					reply_text = ""
+					for n, i in enumerate(reply):
+						reply_text += i + "\n"
+						if n != len(reply) - 1:
+							if reply[n+1] and i:
+								reply_text += "  "
+					comm.reply(reply_text)
 					successful = True
 				if successful or self.save_all:
 					self.visited.add(comm.id)

@@ -6,5 +6,5 @@
 	"userAgent": "",
 	"checkMessages": true,
 	"verbose": true,
-	"saveAll": false,
+	"saveAll": false
 }
